@@ -37,7 +37,7 @@
     <div id="intro-layer" onclick="handleIntro()">
         <img src="Intro1.png" id="intro-img" style="width:600px">
         <div style="background:#000; width:600px; padding:20px; border:1px solid #222;">
-            <p id="intro-txt">دکتر: "ببین دادا، وضع قلبت اصلاً خوب نیس... ۲۵ هزارتا می‌خواد!"</p>
+            <p id="intro-txt">دکتر: "ببین داداش، وضع قلبت اصلاً خوب نیس... ۲۵ هزارتا برای عمل می‌خواد!"</p>
         </div>
     </div>
 
@@ -47,19 +47,19 @@
     <img id="tyler" src="Tyler_Straight_Neutral.png" onclick="hit()">
     
     <div id="speech-zone">
-        <span id="speech-text">تایلر: "سلام دادا! من تایلرم. خوش اومدی به این جاده خلوتس! بزن رو من پول بگیر."</span>
+        <span id="speech-text">هاروی: "سلام! من هاروی ام. خوش اومدی به این جاده خلوت! بزن رو من تا پول بگیری."</span>
     </div>
 
     <div id="shop-ui">
         <img id="close-shop" src="Shop Close.png" onclick="toggleShop(false)">
         <div class="item-list">
-            <div class="item" onclick="buy('feather', 100, 2, 'Feather.png', 'Tyler_Normal_Happy.png', 'قلقلکم می‌دی؟ ای شیطون! خوشم اومدِس!')">
+            <div class="item" onclick="buy('feather', 100, 2, 'Feather.png', 'Tyler_Normal_Happy.png', 'قلقلکم می‌دی؟ ای شیطون! خوشم اومد!!')">
                 <img src="Feather NotBought.png" id="i-feather"><span>پر (100$)</span>
             </div>
-            <div class="item" onclick="buy('needle', 500, 8, 'Needle.png', 'Tyler_Normal_Shock.png', 'آخ! این چی بود؟ سوزن زدیا! پوستم خراب شدِس...')">
+            <div class="item" onclick="buy('needle', 500, 8, 'Needle.png', 'Tyler_Normal_Shock.png', 'آخ! این چی بود؟ سوزن زدیا! پوستم خراب شد!...')">
                 <img src="Needle NotBought (1).png" id="i-needle"><span>سوزن (500$)</span>
             </div>
-            <div class="item" onclick="buy('hammer', 1500, 25, 'Hammer.png', 'Tyler_Straight_ScaredHammer.png', 'نه! چکش نه! من عیالوارم، به بچه‌هام رحم کن دادا!')">
+            <div class="item" onclick="buy('hammer', 1500, 25, 'Hammer.png', 'Tyler_Straight_ScaredHammer.png', 'نه! چکش نه! من خانواده، به بچه‌هام رحم کن !!')">
                 <img src="Hammer NotBought.png" id="i-hammer"><span>چکش (1500$)</span>
             </div>
             <div class="item" onclick="buy('scissors', 3000, 0, 'Scissors.png', 'Harvey_Pain_Shock.png', '...')">
@@ -79,17 +79,17 @@
     let money = 0; let power = 1; let tool = 'hand'; let intro = 1;
 
     const dialogs = {
-        hand: ["پول‌ها رو حس می‌کنی؟ کلیک کن دادا!", "من همیشه اینجام تا کمکت کنم پولدار شی."],
-        feather: ["هاها! این خیلی خنده‌دارِس!", "داری باهام بازی می‌کنی؟"],
-        needle: ["اوخ! یکم آروم‌تر بزن.", "پوستم سوراخ شدِس، اذیت می‌شم..."],
-        hammer: ["التماست می‌کنم! به فکر خانواده‌م باش!", "استخونام دارن خرد می‌شن... تمومش کن دادا!"],
-        scissors: ["دیگه هیچی مهم نیس...", "بزن و خلاصم کن... بلیت جهنمت مبارکِس."]
+        hand: ["پول‌ها رو حس می‌کنی؟ کلیک کن تا بازم بگیری!", "من همیشه اینجام تا کمکت کنم پولدار شی."],
+        feather: ["هاها! این خیلی خنده‌داره!", "داری باهام بازی می‌کنی؟"],
+        needle: ["اوخ! یکم آروم‌تر بزن.", "پوستم سوراخ شده،دارم اذیت می‌شم..."],
+        hammer: ["التماست می‌کنم! به فکر خانواده‌م باش!", "استخونام دارن خرد می‌شن... تمومش کن لطفا!این دیگه یه بازی نیست!!"],
+        scissors: ["دیگه هیچی مهم نیس...", "بزن و خلاصم کن... تو با این کارت بلیت عملتو نخریدی. بلیت جهنمت  رو خریدی!."]
     };
 
     function handleIntro() {
         if(intro === 1) {
             document.getElementById('intro-img').src = 'Intro2.png';
-            document.getElementById('intro-txt').innerText = "تایلر: سلام غریبه... جاده جای عجیبیِس. پول می‌خوای؟";
+            document.getElementById('intro-txt').innerText = "هاروی: سلام غریبه... جاده جای عجیبیه. پول می‌خوای؟";
             intro = 2;
         } else { document.getElementById('intro-layer').style.display = 'none'; }
     }
@@ -128,7 +128,7 @@
                 }, 2000);
             }
             toggleShop(false);
-        } else { alert("پولِت کمه دادا! بیشتر کلیک کن."); }
+        } else { alert("پولِت کمه! بیشتر کلیک کن."); }
     }
 </script>
 </body>
