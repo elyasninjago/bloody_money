@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Blood Money - Isfahan Edition</title>
+    <title>Blood Money - Final Edition</title>
     <style>
         body { margin: 0; background: #000; color: white; font-family: 'Tahoma', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         #game-container { width: 1000px; height: 700px; background: url('Stall.png') no-repeat center bottom/cover; position: relative; border: 2px solid #222; }
@@ -14,9 +14,22 @@
         /* تایلر (هاروی) */
         #tyler { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); height: 580px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
 
-        /* ابر دیالوگ */
-        #speech-zone { position: absolute; bottom: 0; width: 100%; height: 220px; background: url('msgimg_0.png') no-repeat center center/contain; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 0 120px; box-sizing: border-box; }
-        #speech-text { color: #000; font-weight: bold; font-size: 1.2rem; text-align: center; max-width: 700px; }
+        /* ابر دیالوگ اصلاح شده (کشیده شده از دو طرف) */
+        #speech-zone { 
+            position: absolute; 
+            bottom: 0; 
+            width: 100%; 
+            height: 200px; 
+            background: url('msgimg_0.png') no-repeat; 
+            background-size: 100% 100%; /* این خط باعث کشیده شدن عکس از دو طرف می‌شه */
+            z-index: 50; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 0 80px; 
+            box-sizing: border-box; 
+        }
+        #speech-text { color: #000; font-weight: bold; font-size: 1.3rem; text-align: center; max-width: 850px; line-height: 1.5; }
 
         /* شاپ */
         #shop-ui { position: absolute; inset: 0; background: rgba(0,0,0,0.92) url('Shop Layout.png') no-repeat center/contain; display: none; z-index: 200; }
@@ -82,8 +95,8 @@
         hand: ["پول‌ها رو حس می‌کنی؟ کلیک کن تا بازم بگیری!", "من همیشه اینجام تا کمکت کنم پولدار شی."],
         feather: ["هاها! این خیلی خنده‌داره!", "داری باهام بازی می‌کنی؟"],
         needle: ["اوخ! یکم آروم‌تر بزن.", "پوستم سوراخ شده،دارم اذیت می‌شم..."],
-        hammer: ["التماست می‌کنم! به فکر خانواده‌م باش!", "استخونام دارن خرد می‌شن... تمومش کن لطفا!این دیگه یه بازی نیست!!"],
-        scissors: ["دیگه هیچی مهم نیس...", "بزن و خلاصم کن... تو با این کارت بلیت عملتو نخریدی. بلیت جهنمت  رو خریدی!."]
+        hammer: ["التماست می‌کنم! به فکر خانواده‌م باش!", "استخونام دارن خرد می‌شن... تمومش کن لطفا! این دیگه یه بازی نیست!!"],
+        scissors: ["دیگه هیچی مهم نیس...", "بزن و خلاصم کن... تو با این کارت بلیت عملتو نخریدی. بلیت جهنمت رو خریدی!"]
     };
 
     function handleIntro() {
@@ -106,7 +119,7 @@
 
         if(Math.random() < 0.2) {
             const pool = dialogs[tool];
-            document.getElementById('speech-text').innerText = "تایلر: " + pool[Math.floor(Math.random()*pool.length)];
+            document.getElementById('speech-text').innerText = "هاروی: " + pool[Math.floor(Math.random()*pool.length)];
         }
     }
 
@@ -115,8 +128,8 @@
             money -= cost; power = pwr; tool = id;
             document.getElementById('m-val').innerText = money.toLocaleString();
             document.getElementById('i-'+id).src = bImg;
-            document.getElementById('tyler').src = tImg; // اینجا عکس تایلر عوض می‌شه (سوزن -> Tyler_Normal_Shock)
-            document.getElementById('speech-text').innerText = "تایلر: " + talk;
+            document.getElementById('tyler').src = tImg;
+            document.getElementById('speech-text').innerText = "هاروی: " + talk;
             if(id === 'scissors') {
                 setTimeout(() => {
                     document.getElementById('death-screen').style.display = 'flex';
