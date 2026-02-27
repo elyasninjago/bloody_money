@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Blood Money - Tyler Edition</title>
+    <style>
+        body { margin: 0; background: #000; color: white; font-family: 'Tahoma', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        #game-container { width: 900px; height: 600px; background: url('Stall.png') no-repeat center/cover; position: relative; border: 3px solid #333; }
+        
+        /* اینتروها */
+        #intro-layer { position: absolute; inset: 0; background: black; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        #intro-img { width: 500px; border: 1px solid #444; }
+
+        /* رابط کاربری */
+        #hud { position: absolute; top: 0; width: 100%; height: 60px; background: url('Hud_1.png') repeat-x; display: flex; align-items: center; padding: 0 20px; font-size: 1.5rem; color: #0f0; z-index: 10; }
+        
+        /* تایلر (هاروی) */
+        #tyler { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); height: 380px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
+        #tyler:active { transform: translateX(-50%) scale(0.95); }
+
+        /* ابر متن گفتگو */
+        #speech-bubble { position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); width: 400px; height: 100px; background: url('msgimg_0.png') no-repeat center/contain; display: flex; align-items: center; justify-content: center; color: black; padding: 20px; text-align: center; font-weight: bold; font-size: 0.9rem; pointer-events: none; }
+
+        /* سیستم شاپ */
+        #shop-btn { position: absolute; right: 20px; bottom: 20px; width: 80px; cursor: pointer; z-index: 20; }
+        #shop-ui { position: absolute; inset: 50px; background: url('Shop Layout.png') no-repeat center/contain; display: none; z-index: 30; padding: 40px; }
+        #close-shop { position: absolute; top: 10px; right: 10px; width: 40px; cursor: pointer; }
+        .item-list { display: flex; justify-content: center; gap: 20px; margin-top: 100px; }
+        .item { width: 80px; text-align: center; cursor: pointer; }
+        .item img { width: 100%; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="intro-layer" onclick="handleIntro()">
+        <img id="intro-img" src="Intro1.png">
+        <p id="intro-txt">دکتر: "هزینه جراحی ۲۵,۰۰۰ دلاره. پولی نداری؟"</p>
+    </div>
+
+    <div id="hud">ثروت: $<span id="money-text">0</span></div>
+
+    <img id="tyler" src="Tyler_Straight_Neutral.png" onclick="hitTyler()">
+    
+    <div id="speech-bubble">
+        <span id="txt">هاروی: "سلام! من تایلرم. خوشگلم نه؟ بزن رو من تا بهت پول بدم!"</span>
+    </div>
+
+    <img id="shop-btn" src="Shop.png" onclick="toggleShop(true)">
+
+    <div id="shop-ui">
+        <img id="close-shop" src="Shop Close.png" onclick="toggleShop(false)">
+        <div class="item-list">
+            <div class="item" onclick="buy('feather', 100, 5, 'Feather.png', 'Tyler_Normal_Happy.png', 'قلقلکم می‌دی؟ ای شیطون!')">
+                <img src="Feather NotBought.png" id="img-feather">
+            </div>
+            <div class="item" onclick="buy('needle', 500, 20, 'Needle.png', 'Tyler_Normal_Confused.png', 'آخ! سوزن بود؟ یکم جدی شدی...')">
+                <img src="Needle NotBought (1).png" id="img-needle">
+            </div>
+            <div class="item" onclick="buy('scissors', 5000, 200, 'Scissors.png', 'Harvey_Pain_Shock.png', 'نه! چشمم! تو یه روانی هستی!')">
+                <img src="Scissors NotBought.png" id="img-scissors">
+            </div>
+            <div class="item" onclick="buy('hammer', 15000, 0, 'Hammer.png', 'Tyler_Normal_PainHammer.png', '...')">
+                <img src="Hammer NotBought.png" id="img-hammer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let money = 0;
+    let power = 1;
+    let introStep = 1;
+    let isDead = false;
+
+    function handleIntro() {
+        if(introStep === 1) {
+            document.getElementById('intro-img').src = 'Intro2.png';
+            document.getElementById('intro-txt').innerText = "تایلر: سلام غریبه... جاده جای خطرناکیه.";
+            introStep = 2;
+        } else {
+            document.getElementById('intro-layer').remove();
+        }
+    }
+
+    function toggleShop(show) {
+        document.getElementById('shop-ui').style.display = show ? 'block' : 'none';
+    }
+
+    function hitTyler() {
+        if(isDead) return;
+        money += power;
+        document.getElementById('money-text').innerText = money.toLocaleString();
+        
+        // افکت لرزش تایلر
+        const t = document.getElementById('tyler');
+        t.style.transform = 'translateX(-50%) scale(0.9)';
+        setTimeout(() => t.style.transform = 'translateX(-50%) scale(1)', 50);
+    }
+
+    function buy(id, cost, pwr, boughtImg, tylerImg, talk) {
+        if(money >= cost) {
+            money -= cost;
+            power = pwr;
+            document.getElementById('money-text').innerText = money.toLocaleString();
+            document.getElementById('img-' + id).src = boughtImg;
+            document.getElementById('tyler').src = tylerImg;
+            document.getElementById('txt').innerText = "هاروی: " + talk;
+            
+            if(id === 'hammer') {
+                isDead = true;
+                power = 0;
+                money = 99999;
+                document.getElementById('money-text').innerText = "99,999 (MAX)";
+                document.getElementById('txt').innerText = "تایلر دیگر نفس نمی‌کشد. تو بردی... اما به چه قیمتی؟";
+                setTimeout(() => {
+                    alert("پایان: تایلر کشته شد. تو با ۹۹۹۹۹ دلار فرار کردی.");
+                }, 1000);
+            }
+            toggleShop(false);
+        } else {
+            alert("پول کافی نداری رفیق!");
+        }
+    }
+</script>
+</body>
+</html>
