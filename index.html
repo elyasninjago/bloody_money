@@ -2,32 +2,46 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Blood Money - Tyler Edition</title>
+    <title>Blood Money - Tyler Ultimate Remake</title>
     <style>
+        :root { --blood: #600; }
         body { margin: 0; background: #000; color: white; font-family: 'Tahoma', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        #game-container { width: 900px; height: 600px; background: url('Stall.png') no-repeat center/cover; position: relative; border: 3px solid #333; }
         
-        /* اینتروها */
-        #intro-layer { position: absolute; inset: 0; background: black; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        #intro-img { width: 500px; border: 1px solid #444; }
+        #game-container { width: 1000px; height: 700px; background: url('Stall.png') no-repeat center bottom/cover; position: relative; border: 2px solid #222; overflow: hidden; }
 
-        /* رابط کاربری */
-        #hud { position: absolute; top: 0; width: 100%; height: 60px; background: url('Hud_1.png') repeat-x; display: flex; align-items: center; padding: 0 20px; font-size: 1.5rem; color: #0f0; z-index: 10; }
+        /* بخش اینترو با کادر متن سیاه */
+        #intro-layer { position: absolute; inset: 0; background: black; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        #intro-img { width: 600px; margin-top: 50px; }
+        #intro-sub-box { width: 600px; height: 150px; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; border: 1px solid #111; }
+
+        /* HUD - پول بالا سمت چپ */
+        #hud { position: absolute; top: 10px; left: 10px; padding: 10px 20px; background: rgba(0,0,0,0.8); border-radius: 5px; font-size: 1.8rem; color: #0f0; z-index: 100; font-family: monospace; border: 1px solid #333; }
+
+        /* آیکون شاپ - بالا سمت راست */
+        #shop-btn { position: absolute; top: 15px; right: 15px; width: 100px; cursor: pointer; z-index: 100; transition: 0.3s; }
+        #shop-btn:hover { transform: scale(1.1); filter: drop-shadow(0 0 10px red); }
+
+        /* تایلر بزرگ روی میز */
+        #tyler { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); height: 550px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
         
-        /* تایلر (هاروی) */
-        #tyler { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); height: 380px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
-        #tyler:active { transform: translateX(-50%) scale(0.95); }
+        /* باکس دیالوگ پایین صفحه */
+        #speech-zone { position: absolute; bottom: 0; width: 100%; height: 160px; background: url('msgimg_0.png') no-repeat center center/contain; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 0 100px; box-sizing: border-box; pointer-events: none; }
+        #speech-text { color: #000; font-weight: bold; font-size: 1.1rem; text-align: center; line-height: 1.6; max-width: 600px; }
 
-        /* ابر متن گفتگو */
-        #speech-bubble { position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%); width: 400px; height: 100px; background: url('msgimg_0.png') no-repeat center/contain; display: flex; align-items: center; justify-content: center; color: black; padding: 20px; text-align: center; font-weight: bold; font-size: 0.9rem; pointer-events: none; }
+        /* منوی شاپ */
+        #shop-ui { position: absolute; inset: 0; background: rgba(0,0,0,0.95) url('Shop Layout.png') no-repeat center/contain; display: none; z-index: 200; }
+        #close-shop { position: absolute; top: 40px; right: 40px; width: 60px; cursor: pointer; }
+        .item-list { display: flex; justify-content: center; gap: 40px; margin-top: 250px; }
+        .item { width: 120px; text-align: center; cursor: pointer; padding: 10px; border: 1px solid transparent; }
+        .item:hover { border: 1px solid #500; background: rgba(255,0,0,0.1); }
+        .item img { width: 100%; margin-bottom: 10px; }
 
-        /* سیستم شاپ */
-        #shop-btn { position: absolute; right: 20px; bottom: 20px; width: 80px; cursor: pointer; z-index: 20; }
-        #shop-ui { position: absolute; inset: 50px; background: url('Shop Layout.png') no-repeat center/contain; display: none; z-index: 30; padding: 40px; }
-        #close-shop { position: absolute; top: 10px; right: 10px; width: 40px; cursor: pointer; }
-        .item-list { display: flex; justify-content: center; gap: 20px; margin-top: 100px; }
-        .item { width: 80px; text-align: center; cursor: pointer; }
-        .item img { width: 100%; }
+        /* صفحه پایان دراماتیک */
+        #death-screen { position: absolute; inset: 0; background: black; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 50px; }
+        .dark-text { color: #800; font-size: 1.6rem; margin-bottom: 20px; line-height: 2; opacity: 0; transition: 2s; }
+
+        button { background: #111; color: #888; border: 1px solid #444; padding: 10px 25px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #300; color: #fff; }
     </style>
 </head>
 <body>
@@ -35,35 +49,48 @@
 <div id="game-container">
     <div id="intro-layer" onclick="handleIntro()">
         <img id="intro-img" src="Intro1.png">
-        <p id="intro-txt">دکتر: "هزینه جراحی ۲۵,۰۰۰ دلاره. پولی نداری؟"</p>
+        <div id="intro-sub-box">
+            <p id="intro-txt" style="font-size: 1.3rem;">"صدای بوق ممتد... وضعیت قلبی شما وخیم است."</p>
+            <p style="color: #555; font-size: 0.9rem;">(برای ادامه کلیک کنید)</p>
+        </div>
     </div>
 
-    <div id="hud">ثروت: $<span id="money-text">0</span></div>
+    <div id="hud">$ <span id="money-text">0</span></div>
+    <img id="shop-btn" src="Shop.png" onclick="toggleShop(true)">
 
     <img id="tyler" src="Tyler_Straight_Neutral.png" onclick="hitTyler()">
     
-    <div id="speech-bubble">
-        <span id="txt">هاروی: "سلام! من تایلرم. خوشگلم نه؟ بزن رو من تا بهت پول بدم!"</span>
+    <div id="speech-zone">
+        <span id="speech-text">تایلر: "اوه سلام! من تایلرم. خوشحالم که اینجایی. می‌خوای کمی پول دربیاری؟ همه‌اش مال توئه!"</span>
     </div>
-
-    <img id="shop-btn" src="Shop.png" onclick="toggleShop(true)">
 
     <div id="shop-ui">
         <img id="close-shop" src="Shop Close.png" onclick="toggleShop(false)">
         <div class="item-list">
-            <div class="item" onclick="buy('feather', 100, 5, 'Feather.png', 'Tyler_Normal_Happy.png', 'قلقلکم می‌دی؟ ای شیطون!')">
+            <div class="item" onclick="buy('feather', 100, 5, 'Feather.png', 'Tyler_Normal_Happy.png', 'قلقلکم می‌دی؟ هاها! تو واقعاً آدم باذوقی هستی رفیق.')">
                 <img src="Feather NotBought.png" id="img-feather">
+                <span>پر (100$)</span>
             </div>
-            <div class="item" onclick="buy('needle', 500, 20, 'Needle.png', 'Tyler_Normal_Confused.png', 'آخ! سوزن بود؟ یکم جدی شدی...')">
+            <div class="item" onclick="buy('needle', 500, 20, 'Needle.png', 'Tyler_Normal_Confused.png', 'آخ! سوزن؟ یکم جدی شدی... اما اشکال نداره، ادامه بده.')">
                 <img src="Needle NotBought (1).png" id="img-needle">
+                <span>سوزن (500$)</span>
             </div>
-            <div class="item" onclick="buy('scissors', 5000, 200, 'Scissors.png', 'Harvey_Pain_Shock.png', 'نه! چشمم! تو یه روانی هستی!')">
+            <div class="item" onclick="buy('scissors', 5000, 250, 'Harvey_Pain_Shock.png', 'نه! چشمم! دنیام تیره شد... تو یه هیولایی! من فقط می‌خواستم کمکت کنم!')">
                 <img src="Scissors NotBought.png" id="img-scissors">
+                <span>قیچی (5000$)</span>
             </div>
             <div class="item" onclick="buy('hammer', 15000, 0, 'Hammer.png', 'Tyler_Normal_PainHammer.png', '...')">
                 <img src="Hammer NotBought.png" id="img-hammer">
+                <span>چکش (15000$)</span>
             </div>
         </div>
+    </div>
+
+    <div id="death-screen">
+        <div class="dark-text" id="dt1">تو واقعاً به این همه پول نیاز داشتی؟ نه نداشتی...</div>
+        <div class="dark-text" id="dt2">تو معتاد اون خوشی بودی که به راحتی به دست می‌آوردی...</div>
+        <div class="dark-text" id="dt3" style="color: #0f0; font-family: monospace;">ثروت نهایی: 99,999$</div>
+        <button onclick="location.reload()" style="opacity:0; transition:3s; margin-top:50px;" id="rebnt">خروج از کابوس</button>
     </div>
 </div>
 
@@ -73,17 +100,26 @@
     let introStep = 1;
     let isDead = false;
 
+    const dialogues = [
+        "پول‌ها رو حس می‌کنی؟ همه‌اش مال توئه!",
+        "داری عالی پیش می‌ری رفیق، ادامه بده!",
+        "من همیشه اینجام تا بهت کمک کنم پولدار شی.",
+        "کلیک کن! دنیا مال کساییه که جرات دارن!",
+        "حس خوبیه، نه؟ دیدنِ زیاد شدنِ عددها..."
+    ];
+
     function handleIntro() {
         if(introStep === 1) {
             document.getElementById('intro-img').src = 'Intro2.png';
-            document.getElementById('intro-txt').innerText = "تایلر: سلام غریبه... جاده جای خطرناکیه.";
+            document.getElementById('intro-txt').innerText = "تایلر: سلام غریبه... جاده جای عجیبیه. پول می‌خوای؟";
             introStep = 2;
         } else {
-            document.getElementById('intro-layer').remove();
+            document.getElementById('intro-layer').style.display = 'none';
         }
     }
 
     function toggleShop(show) {
+        if(isDead) return;
         document.getElementById('shop-ui').style.display = show ? 'block' : 'none';
     }
 
@@ -92,10 +128,13 @@
         money += power;
         document.getElementById('money-text').innerText = money.toLocaleString();
         
-        // افکت لرزش تایلر
         const t = document.getElementById('tyler');
-        t.style.transform = 'translateX(-50%) scale(0.9)';
-        setTimeout(() => t.style.transform = 'translateX(-50%) scale(1)', 50);
+        t.style.transform = 'translateX(-50%) scale(0.98) translateY(10px)';
+        setTimeout(() => t.style.transform = 'translateX(-50%) scale(1) translateY(0)', 50);
+
+        if(Math.random() < 0.1) {
+            document.getElementById('speech-text').innerText = "تایلر: " + dialogues[Math.floor(Math.random() * dialogues.length)];
+        }
     }
 
     function buy(id, cost, pwr, boughtImg, tylerImg, talk) {
@@ -105,22 +144,24 @@
             document.getElementById('money-text').innerText = money.toLocaleString();
             document.getElementById('img-' + id).src = boughtImg;
             document.getElementById('tyler').src = tylerImg;
-            document.getElementById('txt').innerText = "هاروی: " + talk;
+            document.getElementById('speech-text').innerText = "تایلر: " + talk;
             
             if(id === 'hammer') {
-                isDead = true;
-                power = 0;
-                money = 99999;
-                document.getElementById('money-text').innerText = "99,999 (MAX)";
-                document.getElementById('txt').innerText = "تایلر دیگر نفس نمی‌کشد. تو بردی... اما به چه قیمتی؟";
-                setTimeout(() => {
-                    alert("پایان: تایلر کشته شد. تو با ۹۹۹۹۹ دلار فرار کردی.");
-                }, 1000);
+                triggerDeath();
             }
             toggleShop(false);
         } else {
-            alert("پول کافی نداری رفیق!");
+            alert("هنوز به اندازه کافی بی‌رحم نیستی! (پول نداری)");
         }
+    }
+
+    function triggerDeath() {
+        isDead = true;
+        document.getElementById('death-screen').style.display = 'flex';
+        setTimeout(() => { document.getElementById('dt1').style.opacity = 1; }, 1000);
+        setTimeout(() => { document.getElementById('dt2').style.opacity = 1; }, 4000);
+        setTimeout(() => { document.getElementById('dt3').style.opacity = 1; }, 7000);
+        setTimeout(() => { document.getElementById('rebnt').style.opacity = 1; }, 10000);
     }
 </script>
 </body>
