@@ -14,22 +14,33 @@
         /* تایلر (هاروی) */
         #tyler { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); height: 580px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
 
-        /* ابر دیالوگ اصلاح شده (کشیده شده از دو طرف) */
+        /* ابر دیالوگ اصلاح شده: عرض کمتر و قابلیت چندخطی */
         #speech-zone { 
             position: absolute; 
-            bottom: 0; 
-            width: 100%; 
-            height: 200px; 
+            bottom: 10px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%; /* عرض رو یکم کم کردم که از دو طرف نچسبه */
+            height: 180px; 
             background: url('msgimg_0.png') no-repeat; 
-            background-size: 100% 100%; /* این خط باعث کشیده شدن عکس از دو طرف می‌شه */
+            background-size: 100% 100%; 
             z-index: 50; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 0 80px; 
+            padding: 20px 60px; /* پدینگ برای اینکه متن به لبه‌ها نچسبه */
             box-sizing: border-box; 
         }
-        #speech-text { color: #000; font-weight: bold; font-size: 1.3rem; text-align: center; max-width: 850px; line-height: 1.5; }
+        #speech-text { 
+            color: #000; 
+            font-weight: bold; 
+            font-size: 1.2rem; 
+            text-align: center; 
+            max-width: 100%; 
+            line-height: 1.6; 
+            word-wrap: break-word; /* شکستن کلمات طولانی */
+            white-space: normal;  /* اجازه به چندخطی شدن */
+        }
 
         /* شاپ */
         #shop-ui { position: absolute; inset: 0; background: rgba(0,0,0,0.92) url('Shop Layout.png') no-repeat center/contain; display: none; z-index: 200; }
