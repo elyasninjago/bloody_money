@@ -132,16 +132,15 @@
             document.getElementById('i-'+id).src = bImg;
             document.getElementById('tyler').src = tImg;
             document.getElementById('speech-text').innerText = "هاروی: " + talk;
-            if(id === 'scissors') {
+if(id === 'scissors') {
                 setTimeout(() => {
                     document.getElementById('death-screen').style.display = 'flex';
                     money = 99999;
                     document.getElementById('m-val').innerText = "99,999";
-                    // انیمیشن نمایش متن‌ها به ترتیب
                     setTimeout(() => document.getElementById('dt1').style.opacity = 1, 1000);
                     setTimeout(() => document.getElementById('dt2').style.opacity = 1, 4000);
-                    setTimeout(() => document.getElementById('dt3').style.opacity = 1, 7000);
-                    setTimeout(() => document.getElementById('dt4').style.opacity = 1, 10000);
+                    setTimeout(() => document.getElementById('dt3').style.opacity = 1, 7000); // نمایش بلیت جهنم
+                    setTimeout(() => document.getElementById('dt4').style.opacity = 1, 10000); // نمایش ثروت نهایی
                 }, 2000);
             }
             toggleShop(false);
