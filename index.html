@@ -7,20 +7,20 @@
         body { margin: 0; background: #000; color: white; font-family: 'Tahoma', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         #game-container { width: 1000px; height: 700px; background: url('Stall.png') no-repeat center bottom/cover; position: relative; border: 2px solid #222; }
 
-        /* HUD - پول راست، شاپ چپ */
+        /* HUD */
         #hud-money { position: absolute; top: 15px; right: 20px; padding: 10px 25px; background: rgba(0,0,0,0.8); border: 1px solid #0f0; font-size: 2rem; color: #0f0; z-index: 100; font-family: monospace; }
         #shop-btn { position: absolute; top: 15px; left: 20px; width: 110px; cursor: pointer; z-index: 100; }
 
-        /* تایلر (هاروی) */
+        /* هاروی */
         #tyler { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); height: 580px; cursor: pointer; transition: transform 0.05s; z-index: 5; }
 
-        /* ابر دیالوگ اصلاح شده: عرض کمتر و قابلیت چندخطی */
+        /* ابر دیالوگ اصلاح شده */
         #speech-zone { 
             position: absolute; 
             bottom: 10px; 
             left: 50%;
             transform: translateX(-50%);
-            width: 85%; /* عرض رو یکم کم کردم که از دو طرف نچسبه */
+            width: 75%; /* عرض کمی کمتر برای زیبایی بیشتر */
             height: 180px; 
             background: url('msgimg_0.png') no-repeat; 
             background-size: 100% 100%; 
@@ -28,19 +28,10 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            padding: 20px 60px; /* پدینگ برای اینکه متن به لبه‌ها نچسبه */
+            padding: 20px 50px; 
             box-sizing: border-box; 
         }
-        #speech-text { 
-            color: #000; 
-            font-weight: bold; 
-            font-size: 1.2rem; 
-            text-align: center; 
-            max-width: 100%; 
-            line-height: 1.6; 
-            word-wrap: break-word; /* شکستن کلمات طولانی */
-            white-space: normal;  /* اجازه به چندخطی شدن */
-        }
+        #speech-text { color: #000; font-weight: bold; font-size: 1.2rem; text-align: center; line-height: 1.5; word-wrap: break-word; }
 
         /* شاپ */
         #shop-ui { position: absolute; inset: 0; background: rgba(0,0,0,0.92) url('Shop Layout.png') no-repeat center/contain; display: none; z-index: 200; }
@@ -49,10 +40,9 @@
         .item { width: 130px; text-align: center; cursor: pointer; color: #fff; }
         .item img { width: 80px; display: block; margin: 0 auto 5px; }
 
-        /* اینترو و پایان */
-        #intro-layer { position: absolute; inset: 0; background: black; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        #death-screen { position: absolute; inset: 0; background: black; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .dark-text { color: #800; font-size: 1.6rem; margin: 15px; opacity: 0; transition: 2s; }
+        /* صفحه پایان */
+        #death-screen { position: absolute; inset: 0; background: black; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .dark-text { color: #800; font-size: 1.6rem; margin: 10px; opacity: 0; transition: 2s; max-width: 800px; }
     </style>
 </head>
 <body>
@@ -71,7 +61,7 @@
     <img id="tyler" src="Tyler_Straight_Neutral.png" onclick="hit()">
     
     <div id="speech-zone">
-        <span id="speech-text">هاروی: "سلام! من هاروی ام.بزن رو من تا پول بگیری."</span>
+        <span id="speech-text">هاروی: "سلام! من هاروی ام. بزن رو من تا پول بگیری."</span>
     </div>
 
     <div id="shop-ui">
@@ -95,7 +85,7 @@
     <div id="death-screen">
         <div class="dark-text" id="dt1">تو واقعاً به این همه پول نیاز داشتی؟ نه نداشتی...</div>
         <div class="dark-text" id="dt2">تو معتاد اون خوشی بودی که به راحتی به دست می‌آوردی...</div>
-        <div class="dark-text" id="dt2">تو با اینکار بیلت عملتو نخریدی.بلکه بلیت جهنمتو خریدی!...</div>
+        <div class="dark-text" id="dt3">تو با اینکار بلیت عملتو نخریدی. بلکه بلیت جهنمتو امضا کردی!...</div>
         <div class="dark-text" id="dt4" style="color:#0f0">ثروت نهایی: 99,999$</div>
     </div>
 </div>
@@ -106,8 +96,8 @@
     const dialogs = {
         hand: ["پول‌ها رو حس می‌کنی؟ کلیک کن تا بازم بگیری!", "من همیشه اینجام تا کمکت کنم پولدار شی."],
         feather: ["هاها! این خیلی خنده‌داره!", "داری باهام بازی می‌کنی؟"],
-        needle: ["اوخ! یکم آروم‌تر بزن.", "پوستم سوراخ شده،دارم اذیت می‌شم..."],
-        hammer: ["التماست می‌کنم! به فکر خانواده‌م باش!", "استخونام دارن خرد می‌شن...این دیگه یه بازی نیست!!"],
+        needle: ["اوخ! یکم آروم‌تر بزن.", "پوستم سوراخ شده، دارم اذیت می‌شم..."],
+        hammer: ["التماست می‌کنم! به فکر خانواده‌م باش!", "استخونام دارن خرد می‌شن... این دیگه یه بازی نیست!!"],
         scissors: ["دیگه هیچی مهم نیس...", "بزن و خلاصم کن... تو با این کارت بلیت عملتو نخریدی. بلیت جهنمت رو خریدی!"]
     };
 
@@ -147,9 +137,11 @@
                     document.getElementById('death-screen').style.display = 'flex';
                     money = 99999;
                     document.getElementById('m-val').innerText = "99,999";
+                    // انیمیشن نمایش متن‌ها به ترتیب
                     setTimeout(() => document.getElementById('dt1').style.opacity = 1, 1000);
                     setTimeout(() => document.getElementById('dt2').style.opacity = 1, 4000);
                     setTimeout(() => document.getElementById('dt3').style.opacity = 1, 7000);
+                    setTimeout(() => document.getElementById('dt4').style.opacity = 1, 10000);
                 }, 2000);
             }
             toggleShop(false);
